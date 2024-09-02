@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
 ]
 
 FIRST_PARTY_APPS = [
+    'core.apps.users',
     'core.apps.events',
 ]
 
@@ -90,7 +91,6 @@ DATABASES = {
     },
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -132,3 +132,5 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = "users.User"
