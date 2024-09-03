@@ -9,7 +9,7 @@ class EventSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'title', 'description', 'date',
             'adress', 'lat', 'lon',
-            'organizer'
+            'organizer',
         )
 
 
@@ -19,12 +19,12 @@ class CreateEventSerializer(serializers.ModelSerializer):
         fields = (
             'title', 'description', 'date',
             'adress', 'lat', 'lon',
-            'organizer'
+            'organizer',
         )
 
 
 class EventFilterSerializer(serializers.Serializer):
-    id = serializers.IntegerField(required=False)
+    id = serializers.IntegerField(required=False)  # noqa
     title = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     date = serializers.DateField(required=False)

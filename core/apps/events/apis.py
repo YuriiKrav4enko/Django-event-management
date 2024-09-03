@@ -1,19 +1,26 @@
 from django.http import Http404
-from rest_framework import serializers, status
-from rest_framework.views import APIView
+
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from core.apps.api.pagination import (
+    get_paginated_response,
     LimitOffsetPagination,
-    get_paginated_response
 )
 
-from .models import Event
-from .serializers import EventSerializer, EventFilterSerializer, CreateEventSerializer
-from .services import BaseEventService, ORMEventService
+from .serializers import (
+    CreateEventSerializer,
+    EventFilterSerializer,
+    EventSerializer,
+)
+from .services import (
+    BaseEventService,
+    ORMEventService,
+)
 
 
-class EventListApi(APIView): #ApiErrorsMixin, APIView):
+class EventListApi(APIView):
 
     def get(self, request):
         service: BaseEventService = ORMEventService()
@@ -21,7 +28,6 @@ class EventListApi(APIView): #ApiErrorsMixin, APIView):
         filters_serializer = EventFilterSerializer(data=request.query_params)
         filters_serializer.is_valid(raise_exception=True)
 
-        # events = get_event_list_all(filters=filters_serializer.validated_data)
         events = service.get_event_list()
 
         return get_paginated_response(
@@ -29,7 +35,7 @@ class EventListApi(APIView): #ApiErrorsMixin, APIView):
             serializer_class=EventSerializer,
             queryset=events,
             request=request,
-            view=self
+            view=self,
         )
 
     def post(self, request):
@@ -39,13 +45,13 @@ class EventListApi(APIView): #ApiErrorsMixin, APIView):
         serializer.is_valid(raise_exception=True)
 
         event = service.event_create(
-            **serializer.validated_data # type: ignore
+            **serializer.validated_data,  # type: ignore
         )
 
         serializer = EventSerializer(event)
 
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
-    
+
 
 class EventDetailApi(APIView):
 
@@ -66,18 +72,18 @@ class EventDetailApi(APIView):
 
         event = service.event_update(
             event_id=event_id,
-            **serializer.validated_data # type: ignore
+            **serializer.validated_data,  # type: ignore
         )
 
         return Response(
             status=status.HTTP_200_OK,
-            data=EventSerializer(event).data
+            data=EventSerializer(event).data,
         )
 
-    def delete(self, request, event_id, format=None):
+    def delete(self, request, event_id):
         service: BaseEventService = ORMEventService()
         try:
-            service.event_delete(id=event_id)
+            service.event_delete(event_id=event_id)
         except Http404:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)

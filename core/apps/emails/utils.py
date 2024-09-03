@@ -1,6 +1,7 @@
 import os
 
 from django.conf import settings
+
 from templated_email import InlineImage
 
 
@@ -15,8 +16,8 @@ def make_email_image(path: str) -> InlineImage:
     return InlineImage(basename, img_content)
 
 
-def get_default_email_context() -> dict: # TODO
+def get_default_email_context() -> dict:  # TODO
     """
     Return default context for email, like icons.
     """
-    return dict()
+    return {}

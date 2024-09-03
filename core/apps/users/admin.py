@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import (
+    UserChangeForm,
+    UserCreationForm,
+)
 from django.utils.translation import gettext_lazy as _
 
 from core.apps.users.models import User
@@ -17,7 +20,7 @@ class MyUserChangeForm(UserChangeForm):
 class MyUserCreationForm(UserCreationForm):
 
     error_message = UserCreationForm.error_messages.update({
-        'duplicate_username': 'This username has already been taken.'
+        'duplicate_username': 'This username has already been taken.',
     })
 
     class Meta:
@@ -40,9 +43,11 @@ class MyUserAdmin(AuthUserAdmin):
 
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {
-            "fields": ("first_name", "last_name", "email", "phone_number", "avatar")
-        }),
+        (
+            _("Personal info"), {
+                "fields": ("first_name", "last_name", "email", "phone_number", "avatar"),
+            },
+        ),
         (
             _("Permissions"),
             {

@@ -1,4 +1,8 @@
-from django.urls import include, path
+from django.urls import (
+    include,
+    path,
+)
+
 
 urlpatterns = [
     path("events/", include(("core.apps.events.urls", "events"))),

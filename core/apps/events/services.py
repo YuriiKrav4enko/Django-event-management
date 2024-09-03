@@ -1,15 +1,21 @@
-from abc import ABC, abstractmethod
-from datetime import date, datetime
+from abc import (
+    ABC,
+    abstractmethod,
+)
+from datetime import datetime
 from decimal import Decimal
 
-from django.db.models.query import QuerySet
-from django.http import Http404
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import AbstractBaseUser, AbstractUser
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    AbstractUser,
+)
+from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404
 
 from .filters import BaseEventFilter
 from .models import Event
+
 
 UserModel = get_user_model()
 
@@ -17,16 +23,16 @@ UserModel = get_user_model()
 class BaseEventService(ABC):
     @abstractmethod
     def get_event_list(
-        self, filters: dict | None = None
+        self, filters: dict | None = None,
     ) -> QuerySet[Event]:
         ...
 
     @abstractmethod
     def get_event(
-        self, filters: dict | None = None
+        self, filters: dict | None = None,
     ) -> QuerySet[Event]:
         ...
-    
+
     @abstractmethod
     def event_create(
             self,
@@ -37,9 +43,8 @@ class BaseEventService(ABC):
             adress: str,
             lat: int | None,
             lon: int | None,
-        ) -> Event:
+    ) -> Event:
         ...
-
 
     @abstractmethod
     def event_update(
@@ -52,11 +57,11 @@ class BaseEventService(ABC):
             adress: str,
             lat: int | None,
             lon: int | None,
-        ) -> Event:
+    ) -> Event:
         ...
 
     @abstractmethod
-    def event_delete(self, id: int) -> None:
+    def event_delete(self, event_id: int) -> None:  # noqa A002
         ...
 
 
@@ -69,9 +74,9 @@ class ORMEventService(BaseEventService):
 
         return BaseEventFilter(filters, qs).qs
 
-    def get_event(self, id: int) -> Event | None:
-        return get_object_or_404(Event, id=id)
-    
+    def get_event(self, event_id: int) -> Event | None:
+        return get_object_or_404(Event, id=event_id)
+
     def event_create(
             self,
             title: str,
@@ -81,7 +86,7 @@ class ORMEventService(BaseEventService):
             adress: str,
             lat: int | None,
             lon: int | None,
-        ) -> Event:
+    ) -> Event:
         event = Event(
             title=title,
             description=description,
@@ -89,12 +94,11 @@ class ORMEventService(BaseEventService):
             organizer=organizer,
             adress=adress,
             lat=lat,
-            lon=lon
+            lon=lon,
         )
         event.full_clean()
         event.save()
         return event
-
 
     def event_update(
             self,
@@ -106,7 +110,7 @@ class ORMEventService(BaseEventService):
             adress: str,
             lat: Decimal | None,
             lon: Decimal | None,
-        ) -> Event:
+    ) -> Event:
         event = get_object_or_404(Event, id=event_id)
         event.title = title
         event.description = description
@@ -119,7 +123,6 @@ class ORMEventService(BaseEventService):
         event.save()
         return event
 
-
-    def event_delete(self, id: int) -> None:
-        event = get_object_or_404(Event, id=id)
+    def event_delete(self, event_id: int) -> None:
+        event = get_object_or_404(Event, id=event_id)
         event.delete()

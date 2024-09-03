@@ -206,5 +206,5 @@ if SENTRY_DSN := env.str('SENTRY_DSN', ''):
     from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
         dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()]
+        integrations=[DjangoIntegration()],
     )

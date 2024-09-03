@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 
 def get_paginated_response(
-        *, pagination_class, serializer_class, queryset, request, view
-    ):
+        *, pagination_class, serializer_class, queryset, request, view,
+):
     paginator = pagination_class()
 
     page = paginator.paginate_queryset(queryset, request, view=view)
@@ -33,7 +33,7 @@ class LimitOffsetPagination(_LimitOffsetPagination):
                 ("next", self.get_next_link()),
                 ("previous", self.get_previous_link()),
                 ("results", data),
-            ]
+            ],
         )
 
     def get_paginated_response(self, data):
@@ -50,6 +50,6 @@ class LimitOffsetPagination(_LimitOffsetPagination):
                     ("next", self.get_next_link()),
                     ("previous", self.get_previous_link()),
                     ("results", data),
-                ]
-            )
+                ],
+            ),
         )

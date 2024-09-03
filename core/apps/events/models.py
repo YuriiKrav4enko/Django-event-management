@@ -4,6 +4,7 @@ from django.db import models
 from core.apps.common.fields import CoordinateField
 from core.apps.common.models import TimedBaseModel
 
+
 UserModel = get_user_model()
 
 
@@ -30,7 +31,7 @@ class Event(TimedBaseModel):
         verbose_name='Adress',
         max_length=255,
         blank=True,
-        db_index=True
+        db_index=True,
     )
     lat = CoordinateField(
         verbose_name='Latitude',

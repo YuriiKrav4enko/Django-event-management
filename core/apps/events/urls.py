@@ -1,6 +1,10 @@
 from django.urls import path
 
-from .apis import EventListApi, EventDetailApi
+from .apis import (
+    EventDetailApi,
+    EventListApi,
+)
+
 
 urlpatterns = [
     path("", EventListApi.as_view(), name="event-list"),
