@@ -16,6 +16,10 @@ pillow = "^10.4.0"
 django-allauth = "^64.2.0"
 dj-rest-auth = "^6.0.0"
 requests = "^2.32.3"
+django-anymail = {extras = ["mailgun"], version = "^11.1"}
+sentry-sdk = {extras = ["django"], version = "^2.13.0"}
+django-templated-email = "^3.0.1"
+django-filter = "^24.3"
 
 
 [tool.poetry.group.dev.dependencies]

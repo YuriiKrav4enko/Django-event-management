@@ -49,6 +49,7 @@ THIRD_PARTY_APPS = [
 
 FIRST_PARTY_APPS = [
     'core.apps.users',
+    'core.apps.emails',
     'core.apps.events',
 ]
 
@@ -149,15 +150,16 @@ REST_FRAMEWORK = {
 
 # django-allauth
 # ------------------------------------------------------------------------------
-ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
+ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", default=True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "email"  # or username
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_ADAPTER = "core.apps.auth.adapters.AccountAdapter"
 
 SITE_ID = 1
 
@@ -171,3 +173,38 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+# EMAIL
+# ------------------------------------------------------------------------------
+# https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+
+if env.str('MAILGUN_API_KEY', '') and env.str('MAILGUN_SENDER_DOMAIN', ''):
+    EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+    ANYMAIL = {
+        'MAILGUN_API_KEY': env.str('MAILGUN_API_KEY'),
+        'MAILGUN_SENDER_DOMAIN': env.str('MAILGUN_SENDER_DOMAIN'),
+    }
+    if env.str('MAILGUN_API_URL'):
+        ANYMAIL['MAILGUN_API_URL'] = env.str('MAILGUN_API_URL')
+else:
+    # django-environ - The email() method is an alias for email_url().
+    EMAIL_CONFIG = env.email_url('DJANGO_EMAIL_CONFIG', default='consolemail://')
+    vars().update(EMAIL_CONFIG)
+
+DEFAULT_FROM_EMAIL = 'Yurii Kravchenko <yuriy.krav4enko28@gmail.com>'
+
+# django-templated-email
+# -----------------------------------------------------------------------------
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'
+TEMPLATED_EMAIL_FROM_EMAIL = DEFAULT_FROM_EMAIL
+
+
+# SENTRY SETTINGS
+# -----------------------------------------------------------------------------
+if SENTRY_DSN := env.str('SENTRY_DSN', ''):
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()]
+    )
