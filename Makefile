@@ -22,7 +22,7 @@ db-logs:
 # ________________________________
 .PHONY: backend-image
 backend-image:
-	docker build -t backend_app .
+	docker build -t event_management_backend_app .
 
 .PHONY: backend
 backend:
