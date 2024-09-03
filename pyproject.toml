@@ -20,10 +20,10 @@ django-anymail = {extras = ["mailgun"], version = "^11.1"}
 sentry-sdk = {extras = ["django"], version = "^2.13.0"}
 django-templated-email = "^3.0.1"
 django-filter = "^24.3"
+drf-spectacular = "^0.27.2"
 
 
 [tool.poetry.group.dev.dependencies]
-drf-spectacular = "^0.27.2"
 isort = "^5.13.2"
 pre-commit = "^3.8.0"
 
@@ -53,7 +53,7 @@ skip_glob=[
     "venv",
     ".venv",
 ]
-known_django=["django","ninja"]
+known_django=["django","rest_framework"]
 known_first_party=["core"]
 sections=[
     "FUTURE",

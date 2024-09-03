@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
+from rest_framework.exceptions import ValidationError
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.account.models import EmailConfirmation
@@ -10,7 +11,6 @@ from anymail.exceptions import (
     AnymailError,
     AnymailRequestsAPIError,
 )
-from rest_framework.exceptions import ValidationError
 from sentry_sdk import capture_exception
 from templated_email import send_templated_mail
 

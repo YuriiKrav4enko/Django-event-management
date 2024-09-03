@@ -117,8 +117,8 @@ class ORMEventService(BaseEventService):
         event.date = date
         event.organizer = organizer
         event.adress = adress
-        event.lat = lat
-        event.lon = lon
+        event.lat = lat  # type: ignore
+        event.lon = lon  # type: ignore
 
         event.save()
         return event

@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from core.apps.api.serializers import BaseListPaginatedResponseSerializer
+
 from .models import Event
 
 
@@ -13,7 +15,11 @@ class EventSerializer(serializers.ModelSerializer):
         )
 
 
-class CreateEventSerializer(serializers.ModelSerializer):
+class EventListSerializer(BaseListPaginatedResponseSerializer):
+    data = EventSerializer(many=True, read_only=True)  # type: ignore
+
+
+class EventCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = (
