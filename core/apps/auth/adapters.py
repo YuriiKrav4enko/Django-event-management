@@ -56,6 +56,5 @@ class AccountAdapter(DefaultAccountAdapter):
                 context=context,
             )
         except (AnymailRequestsAPIError, AnymailError, Exception) as anymail_error:
-            raise anymail_error
             capture_exception(anymail_error)
             raise ValidationError(_(text_message)) from anymail_error
